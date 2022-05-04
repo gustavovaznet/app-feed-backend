@@ -1,6 +1,8 @@
 import express from 'express';
 import { prisma } from './prisma';
 import nodemailer from 'nodemailer';
+import { SubmitFeedbackUseCase } from './use-cases/submit-feedback-use-case';
+import { PrismaFeedbacksRepository } from './repositories/prisma/prisma-feedbacks-repository';
 
 export const routes = express.Router();
 
@@ -18,16 +20,18 @@ routes.post('/feedbacks', async (req, res) => {
 
     const { type, comment, screenshot } = req.body;
 
-    const feedback = await prisma.feedback.create({
-        data: {
-            type,
-            comment,
-            screenshot,
-        }
-       
-    });
+    const prismaFeedbacksRepository = new PrismaFeedbacksRepository()
+    const submitFeedbackUseUseCase = new SubmitFeedbackUseCase(
+        prismaFeedbacksRepository
+    )
 
-    await transport.sendMail({
+    await submitFeedbackUseUseCase.execute({
+        type,
+        comment,
+        screenshot,
+    })
+
+    /*await transport.sendMail({
         from: 'Feedback Team <test@feedback.com>',
         to: 'Gustavo Vaz <gustavoti.net@gmail.com>',
         subject: 'New feedback',
@@ -37,7 +41,7 @@ routes.post('/feedbacks', async (req, res) => {
             `<p>Comment: ${comment}<p>`,
             `<div>`
         ].join('\n')
-    })
+    })*/
 
-    return res.status(201).json({ data: feedback });
+    return res.status(201).send();
 });
