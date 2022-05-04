@@ -1,6 +1,10 @@
+//NODEMAIL ADAPTER
+
+//IMPORTING
 import { MailAdapter, SendMailData } from "../mail-adapter";
 import nodemailer from 'nodemailer';
 
+//TRANSPORT MAIL
 const transport = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
@@ -9,7 +13,6 @@ const transport = nodemailer.createTransport({
       pass: "a9119fbb315f3e"
     }
   });
-
 
 export class NodemailMailAdapter implements MailAdapter {
     async sendMail({ subject, body }: SendMailData){

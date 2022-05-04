@@ -1,13 +1,18 @@
+//UNIT TESTS
+
+//IMPORTING
 import { SubmitFeedbackUseCase } from "./submit-feedback-use-case";
 
 const createFeedbackSpy = jest.fn();
 const sendMailSpy = jest.fn();
 
+//SUBMIT
 const submitFeedback = new SubmitFeedbackUseCase(
     { create: createFeedbackSpy },
     { sendMail: sendMailSpy }
 )
 
+//SCREENSHOT CHECK
 describe('Submit feedback', () => {
     it('Should be able to submit a feedback', async () => {
         await expect(submitFeedback.execute({
@@ -22,6 +27,7 @@ describe('Submit feedback', () => {
     })
 });
 
+//TYPE CHECK
 describe('Submit feedback', () => {
     it('Should not be able to submit a feedback without a specific type', async () => {
         await expect(submitFeedback.execute({
@@ -32,6 +38,7 @@ describe('Submit feedback', () => {
     })
 });
 
+//COMMENT CHECK
 describe('Submit feedback', () => {
     it('Should not be able to submit a feedback without a comment', async () => {
         await expect(submitFeedback.execute({
@@ -42,6 +49,7 @@ describe('Submit feedback', () => {
     })
 });
 
+//SCREENSHOT CHECK
 describe('Submit feedback', () => {
     it('Should not be able to submit a feedback without a valid screenshot', async () => {
         await expect(submitFeedback.execute({
